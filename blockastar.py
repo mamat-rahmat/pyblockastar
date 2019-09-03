@@ -134,13 +134,18 @@ class LDDB:
     def __init__(self, grid):
         self.grid = grid
         self.dist = dict()
-        for cellrow in grid.cell:
-            for cell in cellrow:
-                self.dist[cell] = dijkstra(cell)
+        # for cellrow in grid.cell:
+        #     for cell in cellrow:
+        #         self.dist[cell] = dijkstra(cell)
+        for blockrow in grid.block:
+            for block in blockrow:
+                for cell in block.egress:
+                    self.dist[cell] = dijkstra(cell)
 
 
 def initBlock(lddb, cell, tipe):
     block = cell.block
+    lddb.dist[cell] = dijkstra(cell)
     if tipe == 'start':
         for c in block.egress:
             c.g = lddb.dist[cell][c]
